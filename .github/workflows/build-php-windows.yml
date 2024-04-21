@@ -15,7 +15,7 @@ jobs:
         operating-system:
           - "windows-latest"
         extensions:
-          - ctype,curl,fileinfo,mbstring,openssl,phar,sqlite3,tokenizer,zlib
+          - ctype,curl,fileinfo,mbstring,openssl,phar,sqlite3,tokenizer
     
     steps:
       - name: "OS type"
