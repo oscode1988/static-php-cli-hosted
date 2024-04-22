@@ -1,4 +1,4 @@
-name: Build Self-Hosted PHP Binary (Windows, spc-min)
+name: Build Self-Hosted PHP Binary (Windows, spc-me)
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ jobs:
         operating-system:
           - "windows-latest"
         extensions:
-          - ctype,fileinfo,mbstring,tokenizer,phar,curl,openssl,sqlite3
+          - ctype,fileinfo,mbstring,tokenizer,phar,curl,openssl,zlib,sqlite3,simplexml,soap,sockets,pdo,pdo_mysql,pdo_sqlite,mysqli,opcache,session,simdjson
     
     steps:
       - name: "OS type"
@@ -80,26 +80,6 @@ jobs:
           Compress-Archive -Path "buildroot\bin\micro.sfx" -DestinationPath "dist\php-$PHPVER-micro-win.zip"
           echo ("PHPVER=" + $PHPVER) >> $env:GITHUB_ENV
 
-      - name: "Deploy cli to Zhamao Server"
-        uses: Creepios/sftp-action@v1.0.5
-        with:
-          host: ${{ secrets.DEPLOY_SERVER_HOST }}
-          port: ${{ secrets.DEPLOY_SERVER_PORT }}
-          username: ${{ secrets.DEPLOY_SERVER_USER }}
-          privateKey: ${{ secrets.DEPLOY_SERVER_SECRET_KEY }}
-          localPath: "dist/php-${{ env.PHPVER }}-cli-win.zip"
-          remotePath: ${{ secrets.DEPLOY_SERVER_TARGET_WINDOWS_SPC_MIN }}/
-          
-      - name: "Deploy micro to Zhamao Server"
-        uses: Creepios/sftp-action@v1.0.5
-        with:
-          host: ${{ secrets.DEPLOY_SERVER_HOST }}
-          port: ${{ secrets.DEPLOY_SERVER_PORT }}
-          username: ${{ secrets.DEPLOY_SERVER_USER }}
-          privateKey: ${{ secrets.DEPLOY_SERVER_SECRET_KEY }}
-          localPath: "dist/php-${{ env.PHPVER }}-micro-win.zip"
-          remotePath: ${{ secrets.DEPLOY_SERVER_TARGET_WINDOWS_SPC_MIN }}/
-          
       - name: "Upload Artifact"
         uses: actions/upload-artifact@v3
         with:
